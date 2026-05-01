@@ -30,12 +30,12 @@ export async function POST(request) {
     const file = formData.get('file');
     const subject = formData.get('subject');
     const examType = formData.get('examType');
-    const numQuestions = parseInt(formData.get('numQuestions')) || 10;
+    const numQuestions = parseInt(formData.get('numQuestions')) || 5; // ✅ FIXED: default reduced to 5
 
     if (!file) return Response.json({ error: 'No file uploaded' }, { status: 400 });
 
     const extractedText = await extractText(file);
-    const cleaned = extractedText.replace(/\s+/g, ' ').trim().slice(0, 8000);
+    const cleaned = extractedText.replace(/\s+/g, ' ').trim().slice(0, 4000); // ✅ FIXED: reduced from 8000 to 4000
     const hasContent = cleaned.replace(/\s/g, '').length > 100;
 
     const difficultyInstructions = examType === 'UPSC' ?
@@ -66,8 +66,8 @@ Return ONLY a valid JSON array, nothing else:
 [{"question":"Full analytical question?","optionA":"Plausible option","optionB":"Correct answer","optionC":"Tricky wrong option","optionD":"Another wrong option","correct":"B","explanation":"Detailed explanation","difficulty":"hard","topic":"Topic name"}]`;
 
     const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6', // ✅ FIXED: was 'claude-sonnet-4-5'
-      max_tokens: 6000,
+      model: 'claude-sonnet-4-6', // ✅ FIXED: correct model name
+      max_tokens: 3000,           // ✅ FIXED: reduced from 6000 to 3000
       messages: [{ role: 'user', content: prompt }],
     });
 
