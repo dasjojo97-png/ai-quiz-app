@@ -66,7 +66,7 @@ Return ONLY a valid JSON array, nothing else:
 [{"question":"Full analytical question?","optionA":"Plausible option","optionB":"Correct answer","optionC":"Tricky wrong option","optionD":"Another wrong option","correct":"B","explanation":"Detailed explanation","difficulty":"hard","topic":"Topic name"}]`;
 
     const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5',
+      model: 'claude-sonnet-4-6', // ✅ FIXED: was 'claude-sonnet-4-5'
       max_tokens: 6000,
       messages: [{ role: 'user', content: prompt }],
     });
